@@ -4,17 +4,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Microphone Button with Download</title>
+    <title>ChatGPT-like Dark Mode Chat</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 </head>
 
 <body>
-
-    <button id="micButton" class="mic-button">
-        <div class="mic-icon"></div>
-    </button>
-    <div id="status" class="status">Click to start recording</div>
-    <a id="downloadLink" class="download-link" download="recording.wav">Download Audio</a>
+    <div class="chat-container">
+        <div id="chat-box" class="chat-box">
+            <!-- Chat messages will be appended here -->
+        </div>
+        <div class="input-container">
+            <button id="micButton" class="mic-button">
+                <div class="mic-icon"></div>
+            </button>
+        </div>
+    </div>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 

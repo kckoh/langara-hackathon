@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, redirect, url_for, request
+from flask import Flask, render_template
 from langchain_openai import OpenAI
 from langchain import PromptTemplate
 import os
@@ -19,7 +19,8 @@ prompt_template = PromptTemplate(
 
 @app.route('/')
 def index():
-    return "hello world"
+    return render_template('index.html', user='new change')
+
 
 # @app.route('/generate', methods=['GET'])
 # def generate():

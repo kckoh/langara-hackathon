@@ -53,4 +53,4 @@ Languages: python
 - pip install -r requirements.txt
 
 ## run Flask
-- flask --app main run
+- flask --app app/main.py run

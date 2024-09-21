@@ -37,3 +37,20 @@ Tags: LangChain, Flask, AI, Python
 
 Languages: python
 # langara-hackathon
+
+
+## git commands
+- git pull origin main
+- git checkout -b <branch-name>
+- edit or add
+- git status
+- git add <filename>
+- git commit
+- git push origin <branch-name>
+- make a PR
+
+## install python packages
+- pip install -r requirements.txt
+
+## run Flask
+- flask --app main run

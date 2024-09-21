@@ -1,55 +1,124 @@
+/* Reset body styles and set dark mode */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #1e1e2e; /* Dark background */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #e1e1e6; /* Light text color */
+}
+
+/* Container for chat and input */
+.chat-container {
+    width: 100%;
+    max-width: 600px;
+    background-color: #2b2d42; /* Dark container background */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    height: 80vh; /* Adjust height to look similar to ChatGPT */
+}
+
+/* Chat message box */
+.chat-box {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-bottom: 1px solid #444; /* Border to separate chat and input */
+    background-color: #2b2d42; /* Match the chat background */
+}
+
+/* User messages alignment */
+.chat-box .message {
+    padding: 10px;
+    border-radius: 10px;
+    max-width: 80%;
+    word-wrap: break-word;
+}
+
+.chat-box .user {
+    align-self: flex-end;
+    background-color: #007BFF; /* User message background */
+    color: white;
+}
+
+.chat-box .chatgpt {
+    align-self: flex-start;
+    background-color: #444; /* ChatGPT-like response background */
+    color: #e1e1e6;
+}
+
+/* Input and microphone button container */
+.input-container {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    background-color: #2b2d42;
+    border-top: 1px solid #444; /* Border to separate chat and input */
+}
+
+/* Voice button styling */
 .mic-button {
-    display: inline-block;
-    width: 100px;
-    height: 100px;
+    width: 60px;
+    height: 60px;
     background-color: #ff4d4d;
-    /* Red background */
     border: none;
     border-radius: 50%;
-    /* Circular shape */
     cursor: pointer;
-    outline: none;
     position: relative;
-    /* Position for the image */
     transition: background-color 0.3s ease;
-    /* Smooth background color transition */
 }
 
 .mic-button.active {
-    background-color: #4CAF50;
-    /* Green background when recording */
+    background-color: #4CAF50; /* Green when recording */
 }
 
+/* Mic icon inside the button */
 .mic-icon {
     width: 60%;
-    /* Adjust as needed */
     height: 60%;
-    /* Adjust as needed */
     position: absolute;
     top: 50%;
-    /* Center vertically */
     left: 50%;
-    /* Center horizontally */
     transform: translate(-50%, -50%);
-    /* Offset to center */
-    background-image: url('./mic.png');
-    /* Replace with your mic PNG image */
+    background-image: url('./mic.png'); /* Add your mic icon here */
     background-size: contain;
-    /* Scale to fit */
     background-repeat: no-repeat;
-    /* Prevent image repeat */
 }
 
-.status {
-    margin-top: 20px;
-    font-size: 18px;
-    color: #333;
+.mic-button:hover {
+    background-color: #ff3333;
 }
 
-.download-link {
-    display: none;
-    /* Hidden by default */
-    margin-top: 10px;
-    font-size: 18px;
-    color: blue;
+/* Ensure chat box scrolls smoothly */
+.chat-box {
+    overflow-y: auto;
+    scrollbar-color: #888 #2b2d42;
+    scrollbar-width: thin;
+}
+
+/* Scroll bar styles */
+.chat-box::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chat-box::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+}
+
+/* Custom hover and active states for the microphone button */
+.mic-button.active:hover {
+    background-color: #45a049;
+}
+
+.mic-button:hover {
+    background-color: #ff3333;
 }

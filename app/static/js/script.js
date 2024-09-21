@@ -1,47 +1,38 @@
 const micButton = document.getElementById('micButton');
-        const status = document.getElementById('status');
-        const downloadLink = document.getElementById('downloadLink');
-        let mediaRecorder;
-        let isRecording = false;
-        let audioChunks = [];
+const status = document.getElementById('status');
+let isRecording = false;
 
-        // Request permission to use the microphone
-        async function startRecording() {
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            mediaRecorder = new MediaRecorder(stream);
+// Initialize the SpeechRecognition object
+const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+recognition.continuous = true; // Set to true for continuous recognition
+recognition.interimResults = false; // Set to true if you want interim results
 
-            mediaRecorder.ondataavailable = function(event) {
-                if (event.data.size > 0) {
-                    audioChunks.push(event.data);
-                }
-            };
+// Handle the result event to capture transcribed text
+recognition.onresult = (event) => {
+    const transcript = event.results[event.resultIndex][0].transcript;
+    console.log('You said: ', transcript);
+    status.textContent = `Transcription: ${transcript}`;
+};
 
-            mediaRecorder.onstop = function() {
-                const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-                const audioUrl = URL.createObjectURL(audioBlob);
-                audioChunks = []; // Reset the chunks for the next recording
+// Handle errors
+recognition.onerror = (event) => {
+    console.error('Speech recognition error:', event.error);
+    status.textContent = 'Error recognizing speech.';
+};
 
-                // Prepare the download link
-                downloadLink.href = audioUrl;
-                downloadLink.style.display = 'block'; // Show the download link
-                downloadLink.textContent = 'Download Audio'; // Set link text
-            };
-
-            mediaRecorder.start();
-            audioChunks = [];
-        }
-
-        // Toggle recording state
-        micButton.addEventListener('click', () => {
-            if (!isRecording) {
-                micButton.classList.add('active');
-                status.textContent = 'Recording... Click to stop.';
-                startRecording();
-                isRecording = true;
-            } else {
-                micButton.classList.remove('active');
-                status.textContent = 'Recording stopped. Click to download.';
-                mediaRecorder.stop();
-                isRecording = false;
-            }
-        });
+// Toggle recording state
+micButton.addEventListener('click', () => {
+    if (!isRecording) {
+        micButton.classList.add('active');
+        status.textContent = 'Listening... Click to stop.';
+        recognition.start(); // Start speech recognition
+        isRecording = true;
+        console.log("isRecording: ", isRecording);
+    } else {
+        console.log("it stops");
+        micButton.classList.remove('active');
+        status.textContent = 'Stopped listening.';
+        recognition.stop(); // Stop speech recognition
+        isRecording = false;
+    }
+});

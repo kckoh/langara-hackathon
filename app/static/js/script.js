@@ -1,20 +1,19 @@
-const micButton = document.getElementById('micButton');
+const micButton = document.getElementById('micButton'); 
 const sendButton = document.getElementById('sendButton');
 const userInput = document.getElementById('userInput');
 const chatBox = document.getElementById('chat-box');
 let isRecording = false;
 let transcript = '';
+
 // Initialize SpeechRecognition
 const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-recognition.continuous = true;
+recognition.continuous = false; // Set to false to capture only a single utterance
 recognition.interimResults = false;
 
+// Handle speech result
 recognition.onresult = (event) => {
     transcript = event.results[event.resultIndex][0].transcript;
-    console.log("transcript: ", transcript)
-    addMessage(transcript, 'user');
-    // Send to ChatGPT API and get response (Simulated here)
-    // simulateChatGPTResponse(transcript);
+    console.log("transcript: ", transcript);
 };
 
 // Handle errors
@@ -29,25 +28,18 @@ micButton.addEventListener('click', () => {
         recognition.start();
         isRecording = true;
     } else {
-        
         micButton.classList.remove('active');
         recognition.stop();
         isRecording = false;
-        simulateChatGPTResponse(transcript);
-        
+
+        // Simulate ChatGPT response after stopping recording
+        if (transcript.trim()) {
+            addMessage(transcript, 'user'); // Display the user's message
+            simulateChatGPTResponse(transcript); // Send it for processing
+            transcript = ''; // Clear the transcript after sending
+        }
     }
 });
-
-// Send button listener
-// sendButton.addEventListener('click', () => {
-//     const message = userInput.value;
-//     if (message.trim()) {
-//         addMessage(message, 'user');
-//         // Send to ChatGPT API and get response (Simulated here)
-//         simulateChatGPTResponse(message);
-//         userInput.value = '';
-//     }
-// });
 
 // Add message to chat
 function addMessage(message, sender) {

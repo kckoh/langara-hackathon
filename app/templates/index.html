@@ -20,6 +20,7 @@
             display: inline-block;
             width: 50px; /* Smaller width */
             height: 28px; /* Smaller height */
+            margin-bottom: 10px;
         }
 
         /* Hide default HTML checkbox */
@@ -86,6 +87,7 @@
             line-height: 1.5; /* Increase line height for readability */
             color: white; /* Dark text for better readability */
             margin-top: 10px; /* Spacing above */
+            width: 480px;
         }
     </style>
 </head>
@@ -111,17 +113,23 @@
 
         <!-- Iframe container for the output -->
         <div class="iframe-container">
+            <label class="switch">
+                <input type="checkbox" id="toggleSwitch">
+                <span class="slider round"></span>
+            </label>
+        <div id="htmlCode"></div>
+
             <iframe id="outputIframe" width="500" height="500"></iframe>
         </div>
+
     </div>
-    <div class="output-container">
+<!--    
         <label class="switch">
             <input type="checkbox" id="toggleSwitch">
             <span class="slider round"></span>
         </label>
-        <div id="htmlCode"></div>
-        <iframe id="outputIframe"></iframe>
-    </div>
+        <iframe id="outputIframe"></iframe> -->
+    
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
     <script>
         async function fetchOutputHtml() {

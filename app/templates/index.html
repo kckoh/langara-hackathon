@@ -58,16 +58,6 @@
             }
         }
 
-        async function fetchHtmlCode() {
-            try {
-                const response = await fetch('/html_code');
-                const data = await response.json();
-                document.getElementById('htmlCode').textContent = data.html_content; 
-            } catch (error) {
-                console.error('Error fetching HTML code:', error);
-            }
-        }
-
         // Call the functions to load content when needed
         fetchOutputHtml();
 

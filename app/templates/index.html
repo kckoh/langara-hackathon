@@ -6,6 +6,90 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web JARVIS</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <style>
+ /* Container for toggle and output */
+ .output-container {
+            display: flex;
+            flex-direction: column;
+            margin-top: 20px; /* Add spacing above */
+        }
+
+        /* The switch - the box around the slider */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px; /* Smaller width */
+            height: 28px; /* Smaller height */
+            margin-bottom: 10px;
+        }
+
+        /* Hide default HTML checkbox */
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        /* The slider */
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 24px; /* Smaller height */
+            width: 24px; /* Smaller width */
+            left: 2px; /* Adjusted position */
+            bottom: 2px; /* Adjusted position */
+            background-color: black;
+            transition: .4s;
+        }
+
+        input:checked + .slider {
+            background-color: white;
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px white
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(22px); /* Adjusted for smaller size */
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 28px; /* Adjusted for smaller size */
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+        #htmlCode {
+            display: none; /* Hide the HTML code by default */
+            white-space: pre; /* Preserve whitespace */
+            background-color: #2b2d42;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            height: 500px; /* Match iframe height */
+            overflow: auto; /* Add scrolling */
+            font-family: monospace; /* Use monospace font for code */
+            line-height: 1.5; /* Increase line height for readability */
+            color: white; /* Dark text for better readability */
+            margin-top: 10px; /* Spacing above */
+            width: 480px;
+        }
+    </style>
 </head>
 
 <body>
@@ -29,16 +113,28 @@
 
         <!-- Iframe container for the output -->
         <div class="iframe-container">
+            <label class="switch">
+                <input type="checkbox" id="toggleSwitch">
+                <span class="slider round"></span>
+            </label>
+        <div id="htmlCode"></div>
+
             <iframe id="outputIframe" width="500" height="500"></iframe>
         </div>
-    </div>
 
-    <!-- JavaScript file -->
+    </div>
+<!--    
+        <label class="switch">
+            <input type="checkbox" id="toggleSwitch">
+            <span class="slider round"></span>
+        </label>
+        <iframe id="outputIframe"></iframe> -->
+    
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
     <script>
         async function fetchOutputHtml() {
             try {
-                const response = await fetch('{{ url_for('output_html')}}');
+                const response = await fetch('{{ url_for('output_html') }}');
                 console.log("response: ", response);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -54,8 +150,40 @@
             }
         }
 
-        // Load content when needed
+        // Call the functions to load content when needed
         fetchOutputHtml();
+
+        document.getElementById('toggleSwitch').addEventListener('change', (event) => {
+            const iframe = document.getElementById('outputIframe');
+            const htmlCodeDiv = document.getElementById('htmlCode');
+
+            if (event.target.checked) {
+                // Show HTML code and hide iframe
+                iframe.style.display = "none";
+                htmlCodeDiv.style.display = "block";
+
+                // Get the complete HTML code from the iframe
+                const iframeDocument = iframe.contentDocument;
+                const completeHtml = `
+                    <!DOCTYPE html>
+                    <html lang="${iframeDocument.documentElement.lang}">
+                    <head>
+                        ${iframeDocument.head.innerHTML}
+                    </head>
+                    <body>
+                        ${iframeDocument.body.innerHTML}
+                    </body>
+                    </html>
+                `;
+                
+                // Format the HTML and set it to the htmlCode div
+                htmlCodeDiv.textContent = completeHtml;
+            } else {
+                // Hide HTML code and show iframe
+                iframe.style.display = "block";
+                htmlCodeDiv.style.display = "none";
+            }
+        });
     </script>
 </body>
 

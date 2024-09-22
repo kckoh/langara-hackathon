@@ -174,18 +174,15 @@ body {
 
 /* Iframe container */
 .iframe-container {
-    flex: 1;
-    /* Allow iframe container to take up available space */
     max-width: 600px;
-    /* Set max width for iframe container */
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     background-color: #23272a;
-    /* Dark grey color */
     border-radius: 10px;
     padding: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    flex-direction: column;
 }
 
 /* Hover effect for iframe container */

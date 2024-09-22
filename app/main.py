@@ -1,6 +1,5 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, make_response
 from langchain_openai import OpenAI, ChatOpenAI
-from langchain import PromptTemplate
 import os
 
 # import api key from .env
@@ -40,19 +39,38 @@ def send_message():
     user_message = data['message']
     print("User message: " + user_message)
     response = ''
-    with open('app/templates/output.html', 'r') as f:
-        response = f.read()
-    print("send-message html code: " + response)
+    # get the absolute path of the file
+    file_path = os.path.join(app.root_path, 'templates', 'output.html')
+    
+    # Open and read the file
+    try:
+        with open(file_path, 'r') as file:
+            response = file.read()
+    except FileNotFoundError:
+        return "File not found", 404
+
+
     result = generate_code(response,"i am passing you the html code and i want you to add  " + user_message + " to the html code; if the request does not make sense, return response with: it is not a valid request and do not make a new one but append to the HTML code. Please make sure the html file renders properly and only include HTML, CSS or JS. do not include ```html```")
-    with open('app/templates/output.html', 'w') as f:
+    with open(file_path, 'w') as f:
         f.write(result)
+
+    with open(file_path, 'r') as file:
+        response = file.read()
+        if result == response:
+            print("successfully updated")
+        else:
+            print("failed to update")
+
     print("Result: " + result)
     return result
 
-@app.route('/output-html', methods=['GET'])
+@app.route('/output-html')
 def output_html():
-    with open('app/templates/output.html', 'r') as f:
-        response = f.read()
+    response = make_response(render_template('output.html'))
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '-1'
+
     return response
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=80)
+    app.run(host='0.0.0.0', port=80, debug=True)

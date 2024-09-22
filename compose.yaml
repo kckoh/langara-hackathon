@@ -11,4 +11,6 @@ services:
         protocol: tcp
         mode: ingress
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/"]
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/" ]
+    volumes:
+      - ./app/templates:/app/templates

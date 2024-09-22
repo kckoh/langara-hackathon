@@ -4,30 +4,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatGPT-like Dark Mode Chat</title>
+    <title>Web JARVIS</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 </head>
 
 <body>
-    <div class="chat-container">
-        <div id="chat-box" class="chat-box">
-            <!-- Chat messages will be appended here -->
+    <!-- Header section -->
+    <div class="header">
+        <h1>Web JARVIS</h1>
+    </div>
+
+    <!-- Main content container -->
+    <div class="content-container">
+        <div class="chat-container">
+            <div id="chat-box" class="chat-box">
+                <!-- Chat messages will be appended here -->
+            </div>
+            <div class="input-container">
+                <button id="micButton" class="mic-button">
+                    <div class="mic-icon"></div>
+                </button>
+            </div>
         </div>
-        <div class="input-container">
-            <button id="micButton" class="mic-button">
-                <div class="mic-icon"></div>
-            </button>
+
+        <!-- Iframe container for the output -->
+        <div class="iframe-container">
+            <iframe id="outputIframe" width="500" height="500"></iframe>
         </div>
     </div>
-    <div>
-        <!-- <iframe src="{{ url_for('output_html')}}" width="500" height="500"></iframe> -->
-        <iframe id="outputIframe" width="500" height="500"></iframe>
-    </div>
+
+    <!-- JavaScript file -->
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
     <script>
         async function fetchOutputHtml() {
             try {
-                const response = await fetch('{{ url_for('output_html') }}');
+                const response = await fetch('{{ url_for('output_html')}}');
                 console.log("response: ", response);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -43,7 +54,7 @@
             }
         }
 
-        // Call the function to load content when needed
+        // Load content when needed
         fetchOutputHtml();
     </script>
 </body>

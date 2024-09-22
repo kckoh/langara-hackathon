@@ -6,6 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChatGPT-like Dark Mode Chat</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <style>
+        #htmlCode {
+            display: none; /* Hide the HTML code by default */
+            white-space: pre; /* Preserve whitespace */
+            background-color: #f4f4f4;
+            padding: 10px;
+            border: 1px solid #ccc;
+            height: 500px; /* Match iframe height */
+            overflow: auto; /* Add scrolling */
+            font-family: monospace; /* Use monospace font for code */
+            line-height: 1.5; /* Increase line height for readability */
+        }
+    </style>
 </head>
 
 <body>
@@ -21,6 +34,8 @@
     </div>
     <div>
         <!-- <iframe src="{{ url_for('output_html')}}" width="500" height="500"></iframe> -->
+        <button id="toggleButton">Show HTML Code</button>
+        <div id="htmlCode"></div>
         <iframe id="outputIframe" width="500" height="500"></iframe>
     </div>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
@@ -43,8 +58,52 @@
             }
         }
 
-        // Call the function to load content when needed
+        async function fetchHtmlCode() {
+            try {
+                const response = await fetch('/html_code');
+                const data = await response.json();
+                document.getElementById('htmlCode').textContent = data.html_content; 
+            } catch (error) {
+                console.error('Error fetching HTML code:', error);
+            }
+        }
+
+        // Call the functions to load content when needed
         fetchOutputHtml();
+
+        document.getElementById('toggleButton').addEventListener('click', () => {
+            const iframe = document.getElementById('outputIframe');
+            const htmlCodeDiv = document.getElementById('htmlCode');
+
+            if (iframe.style.display === "none") {
+                // Show iframe and hide HTML code
+                iframe.style.display = "block";
+                htmlCodeDiv.style.display = "none";
+                document.getElementById('toggleButton').textContent = "Show HTML Code";
+            } else {
+                // Hide iframe and show HTML code
+                iframe.style.display = "none";
+                htmlCodeDiv.style.display = "block";
+                document.getElementById('toggleButton').textContent = "Show Webpage";
+
+                // Get the complete HTML code from the iframe
+                const iframeDocument = iframe.contentDocument;
+                const completeHtml = `
+                    <!DOCTYPE html>
+                    <html lang="${iframeDocument.documentElement.lang}">
+                    <head>
+                        ${iframeDocument.head.innerHTML}
+                    </head>
+                    <body>
+                        ${iframeDocument.body.innerHTML}
+                    </body>
+                    </html>
+                `;
+                
+                // Format the HTML and set it to the htmlCode div
+                htmlCodeDiv.textContent = completeHtml;
+            }
+        });
     </script>
 </body>
 

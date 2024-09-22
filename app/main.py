@@ -21,8 +21,6 @@ def generate_code(file:str, prompt: str) -> str:
     api_key=api_key,  # if you prefer to pass api key in directly instaed of using env vars
     )
     response = llm.invoke(file + prompt)
-    print("Response from chatgpt " + response.content)
-    print(response)
     return response.content
 
 @app.route('/')
@@ -67,12 +65,10 @@ def send_message():
 
 @app.route('/output-html')
 def output_html():
-    # response = make_response(render_template('output.html'))
-    # response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0'
-    # response.headers['Pragma'] = 'no-cache'
-    # response.headers['Expires'] = '-1'
-
-    # return response
+    response = make_response(render_template('output.html'))
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '-1'
     return render_template('output.html')
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=80, debug=True)

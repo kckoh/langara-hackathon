@@ -19,7 +19,33 @@
             </button>
         </div>
     </div>
+    <div>
+        <!-- <iframe src="{{ url_for('output_html')}}" width="500" height="500"></iframe> -->
+        <iframe id="outputIframe" width="500" height="500"></iframe>
+    </div>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script>
+        async function fetchOutputHtml() {
+            try {
+                const response = await fetch('{{ url_for('output_html') }}');
+                console.log("response: ", response);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const htmlContent = await response.text();
+                const iframe = document.getElementById('outputIframe');
+                const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+                iframeDocument.open();
+                iframeDocument.write(htmlContent);
+                iframeDocument.close();
+            } catch (error) {
+                console.error('Error fetching output HTML:', error);
+            }
+        }
+
+        // Call the function to load content when needed
+        fetchOutputHtml();
+    </script>
 </body>
 
 </html>

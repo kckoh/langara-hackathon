@@ -1,4 +1,4 @@
-const micButton = document.getElementById('micButton'); 
+const micButton = document.getElementById('micButton');
 const sendButton = document.getElementById('sendButton');
 const userInput = document.getElementById('userInput');
 const chatBox = document.getElementById('chat-box');
@@ -19,6 +19,10 @@ recognition.onresult = (event) => {
 // Handle errors
 recognition.onerror = (event) => {
     console.error('Speech recognition error:', event.error);
+    addMessage('Error: ' + event.error, 'bot');
+    micButton.classList.remove('active');
+    recognition.stop();
+    isRecording = false;
 };
 
 // Toggle recording
@@ -52,7 +56,15 @@ function addMessage(message, sender) {
 
 // Simulate ChatGPT response (Replace this with actual API call)
 function simulateChatGPTResponse(userMessage) {
-    const response = `You said: ${userMessage}. Here's a response!`; // Simulate response
+    // const response = `You said: ${userMessage}. Here's a response!`; // Simulate response
+    console.log("userMessage: ", userMessage);
+    const response = fetch(`/send-message`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 'message': userMessage })
+    })
     setTimeout(() => {
         addMessage(response, 'chatgpt');
     }, 500); // Simulate delay

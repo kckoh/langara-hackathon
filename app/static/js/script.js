@@ -55,17 +55,29 @@ function addMessage(message, sender) {
 }
 
 // Simulate ChatGPT response (Replace this with actual API call)
-function simulateChatGPTResponse(userMessage) {
-    // const response = `You said: ${userMessage}. Here's a response!`; // Simulate response
+async function simulateChatGPTResponse(userMessage) {
     console.log("userMessage: ", userMessage);
-    const response = fetch(`/send-message`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ 'message': userMessage })
-    })
-    setTimeout(() => {
-        addMessage(response, 'chatgpt');
-    }, 500); // Simulate delay
+
+    try {
+        const response = await fetch(`/send-message`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 'message': userMessage })
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        // if changes are made properly
+        // returns the HTML and changes are made
+        // otherwise
+        // returns 
+        const text = await response.text();
+        addMessage(text, 'chatgpt');
+        fetchOutputHtml(); // Call this function if you want to refresh the iframe after receiving a message
+    } catch (error) {
+        console.error('Error fetching ChatGPT response:', error);
+    }
 }

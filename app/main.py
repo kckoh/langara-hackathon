@@ -20,7 +20,6 @@ def generate_code(file:str, prompt: str) -> str:
     max_retries=2,
     api_key=api_key,  # if you prefer to pass api key in directly instaed of using env vars
     )
-    print("Prompt and file " + file + prompt)
     response = llm.invoke(file + prompt)
     print("Response from chatgpt " + response.content)
     print(response)
@@ -32,25 +31,27 @@ def index():
 
 @app.route('/send-message', methods=['POST'])
 def send_message():
-    # user_message = request.form['message']
-    # prompt = prompt_template.format(topic=user_message)
-    # get the body of the request
     data = request.get_json()
     user_message = data['message']
-    print("User message: " + user_message)
     response = ''
-    # get the absolute path of the file
+    
     file_path = os.path.join(app.root_path, 'templates', 'output.html')
     
-    # Open and read the file
     try:
         with open(file_path, 'r') as file:
             response = file.read()
     except FileNotFoundError:
         return "File not found", 404
 
-
-    result = generate_code(response,"i am passing you the html code and i want you to add  " + user_message + " to the html code; if the request does not make sense, return response with: it is not a valid request and do not make a new one but append to the HTML code. Please make sure the html file renders properly and only include HTML, CSS or JS. do not include ```html```")
+    prompt = (
+        "I am passing you the HTML code and I want you to add "
+        + user_message +
+        " to the HTML code; Please make sure the HTML file renders properly and only include HTML, CSS, or JS. "
+        "Do not include ```html```. Otherwise, if the request does not make sense, return 'INVALID_REQUEST'."
+    )
+    
+    result = generate_code(response, prompt)
+    
     with open(file_path, 'w') as f:
         f.write(result)
 
@@ -60,17 +61,18 @@ def send_message():
             print("successfully updated")
         else:
             print("failed to update")
-
-    print("Result: " + result)
-    return result
+    # add another chatgpt api request to summarize the code
+    
+    return f"Here is the updated HTML code from your '{user_message}'"
 
 @app.route('/output-html')
 def output_html():
-    response = make_response(render_template('output.html'))
-    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0'
-    response.headers['Pragma'] = 'no-cache'
-    response.headers['Expires'] = '-1'
+    # response = make_response(render_template('output.html'))
+    # response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0'
+    # response.headers['Pragma'] = 'no-cache'
+    # response.headers['Expires'] = '-1'
 
-    return response
+    # return response
+    return render_template('output.html')
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=80, debug=True)

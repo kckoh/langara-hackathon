@@ -1,57 +1,123 @@
 /* Reset body styles and set dark mode */
 body {
     font-family: Arial, sans-serif;
-    background-color: #1e1e2e; /* Dark background */
+    background-color: #03030e;
+    /* Dark background */
     margin: 0;
     padding: 0;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    /* Stack elements vertically */
+    justify-content: flex-start;
+    /* Align elements at the top */
     align-items: center;
-    height: 100vh;
-    color: #e1e1e6; /* Light text color */
+    /* Center horizontally */
+    min-height: 100vh;
+    color: #e1e1e6;
+    /* Light text color */
 }
 
-/* Container for chat and input */
-.chat-container {
+/* Header styles */
+.header {
+    background-color: #23272a;
+    /* Dark grey color */
     width: 100%;
+    padding: 20px 0;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    border-radius: 20px;
+    z-index: 100;
+    /* Ensure the header is always on top */
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+/* Main content container */
+.content-container {
+    display: flex;
+    flex-direction: row;
+    /* Place chat and iframe side by side */
+    justify-content: center;
+    /* Center horizontally */
+    width: 100%;
+    max-width: 1200px;
+    /* Set a max width */
+    margin-top: 20px;
+    /* Adds spacing below the header */
+    gap: 20px;
+    /* Space between the chat and iframe containers */
+}
+
+/* Chat container */
+.chat-container {
+    flex: 1;
+    /* Allow chat container to take up available space */
     max-width: 600px;
-    background-color: #2b2d42; /* Dark container background */
+    max-height: 1000px;
+    background-color: #23272a;
+    /* Dark grey color */
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     display: flex;
     flex-direction: column;
-    height: 80vh; /* Adjust height to look similar to ChatGPT */
+    height: 60vh;
+    /* Adjust height */
+    transition: box-shadow 0.3s ease;
+    /* Transition for the hover effect */
+}
+
+.chat-container:hover {
+    box-shadow: 0 0 20px lightblue;
+    /* Light blue glow on hover */
 }
 
 /* Chat message box */
 .chat-box {
     flex: 1;
     padding: 10px;
+    min-height: 415px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
+    margin-bottom: 10px;
     gap: 10px;
-    border-bottom: 1px solid #444; /* Border to separate chat and input */
-    background-color: #2b2d42; /* Match the chat background */
+    border-radius: 20px;
+    background-color: #23272a;
+    /* Dark grey color */
+    transition: box-shadow 0.3s ease;
+    /* Transition for the hover effect */
 }
 
-/* User messages alignment */
+.chat-box:hover {
+    box-shadow: 0 0 20px lightblue;
+    /* Light blue glow on hover */
+}
+
+/* Chat message alignment */
 .chat-box .message {
     padding: 10px;
     border-radius: 10px;
     max-width: 80%;
     word-wrap: break-word;
+    background-color: #23272a;
+    /* Dark grey color */
 }
 
 .chat-box .user {
     align-self: flex-end;
-    background-color: #007BFF; /* User message background */
+    background-color: #007BFF;
+    /* User message background */
     color: white;
 }
 
 .chat-box .chatgpt {
     align-self: flex-start;
-    background-color: #444; /* ChatGPT-like response background */
+    background-color: #528f51;
+    /* Dark grey color */
     color: #e1e1e6;
 }
 
@@ -60,41 +126,91 @@ body {
     display: flex;
     justify-content: center;
     padding: 10px;
-    background-color: #2b2d42;
-    border-top: 1px solid #444; /* Border to separate chat and input */
+    background-color: #23272a;
+    /* Dark grey color */
+    border-radius: 20px;
+    transition: box-shadow 0.3s ease;
+    /* Transition for the hover effect */
+}
+
+.input-container:hover {
+    box-shadow: 0 0 20px lightblue;
+    /* Light blue glow on hover */
 }
 
 /* Voice button styling */
 .mic-button {
-    width: 60px;
+    width: 100px;
+    /* Increase width */
     height: 60px;
+    /* Keep height the same */
     background-color: #ff4d4d;
     border: none;
-    border-radius: 50%;
+    border-radius: 30px;
+    /* Adjust to half of the height to keep the oval shape */
     cursor: pointer;
     position: relative;
     transition: background-color 0.3s ease;
 }
 
 .mic-button.active {
-    background-color: #4CAF50; /* Green when recording */
+    background-color: #4CAF50;
 }
 
-/* Mic icon inside the button */
+/* Mic icon */
 .mic-icon {
-    width: 60%;
-    height: 60%;
+    width: 40px;
+    /* Adjust size of the icon */
+    height: 40px;
+    /* Adjust size of the icon */
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-image: url('./mic.png'); /* Add your mic icon here */
+    background-image: url('./mic.png');
     background-size: contain;
     background-repeat: no-repeat;
 }
 
-.mic-button:hover {
-    background-color: #ff3333;
+/* Iframe container */
+.iframe-container {
+    flex: 1;
+    /* Allow iframe container to take up available space */
+    max-width: 600px;
+    /* Set max width for iframe container */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #23272a;
+    /* Dark grey color */
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Hover effect for iframe container */
+.iframe-container:hover {
+    box-shadow: 0 0 20px lightblue;
+    /* Light blue glow on hover */
+}
+
+/* Hide default scrollbar for the iframe */
+#iframe-container {
+    overflow: hidden;
+    /* Hide the scrollbar completely */
+}
+
+/* Custom scrollbar styles */
+#iframe-container::-webkit-scrollbar {
+    width: 0;
+    /* Remove scrollbar width */
+    height: 0;
+    /* Remove scrollbar height */
+}
+
+#iframe-container::-webkit-scrollbar-thumb {
+    background: transparent;
+    /* Make the scrollbar thumb transparent */
 }
 
 /* Ensure chat box scrolls smoothly */
@@ -104,7 +220,6 @@ body {
     scrollbar-width: thin;
 }
 
-/* Scroll bar styles */
 .chat-box::-webkit-scrollbar {
     width: 6px;
 }

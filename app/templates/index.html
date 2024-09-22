@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatGPT-like Dark Mode Chat</title>
+    <title>Web JARVIS</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
     <style>
  /* Container for toggle and output */
@@ -91,14 +91,27 @@
 </head>
 
 <body>
-    <div class="chat-container">
-        <div id="chat-box" class="chat-box">
-            <!-- Chat messages will be appended here -->
+    <!-- Header section -->
+    <div class="header">
+        <h1>Web JARVIS</h1>
+    </div>
+
+    <!-- Main content container -->
+    <div class="content-container">
+        <div class="chat-container">
+            <div id="chat-box" class="chat-box">
+                <!-- Chat messages will be appended here -->
+            </div>
+            <div class="input-container">
+                <button id="micButton" class="mic-button">
+                    <div class="mic-icon"></div>
+                </button>
+            </div>
         </div>
-        <div class="input-container">
-            <button id="micButton" class="mic-button">
-                <div class="mic-icon"></div>
-            </button>
+
+        <!-- Iframe container for the output -->
+        <div class="iframe-container">
+            <iframe id="outputIframe" width="500" height="500"></iframe>
         </div>
     </div>
     <div class="output-container">
